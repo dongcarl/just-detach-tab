@@ -23,7 +23,7 @@
         "default": "Ctrl+Shift+Space"
       },
       "description": "Detaches active tab"
-    },
+    }
   },
   "applications": {
     "gecko": {

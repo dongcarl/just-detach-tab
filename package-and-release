@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -eo pipefail
+export LC_ALL=C
+
+SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+
+if ! command -v gh; then
+    echo 'GitHub CLI gh not found'
+    exit 1
+fi
+
+# shellcheck disable=SC2209
+TOUCH=touch
+if command -v gtouch; then
+    TOUCH=gtouch
+fi
+
+if ! git diff-index --quiet HEAD -- && [ -z "$FORCE_DIRTY_WORKTREE" ]; then
+    echo "ERR: The current git worktree is dirty"
+    exit 1
+fi
+
+tag="v$(jq --raw-output '.version' -- src/manifest.json)"
+
+if git tag --list 'v*' | grep -F "^v${tag}$"; then
+    echo "ERR: Version in src/manifest.json is already a tag"
+    exit 1
+fi
+
+zipfile=dist/"JustDetachTab-${tag}".zip
+trap 'rm -rf ${zipfile}' INT ERR
+
+if [ -e "$zipfile" ]; then
+    echo "ERR: '${zipfile}' already exists"
+    exit 1
+fi
+
+read -p "About to package '$tag', are you sure? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # Assumes you're in git top level dir
+    (
+        cd src
+        git ls-files | xargs -r "$TOUCH" --no-dereference --date="@${SOURCE_DATE_EPOCH}"
+        
+        # TODO append version?
+        mkdir -p ../dist/
+        git ls-files | zip -r -FS ../"$zipfile" -@
+    )
+fi
+
+read -p "About to create tag and release '$tag', are you sure? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    gh release create "$tag" "$zipfile"
+fi
