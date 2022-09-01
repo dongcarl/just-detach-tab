@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "just-detach-tab@carldong.me": {
+      "updates": [
+        {
+          "version": "0.0.1",
+          "update_link": "https://raw.githubusercontent.com/dongcarl/just-detach-tab/master/updates.json"
+        },
+      ]
+    }
+  }
+}
