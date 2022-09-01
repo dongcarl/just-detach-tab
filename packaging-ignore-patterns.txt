@@ -1,0 +1,5 @@
+/\.gitignore
+/packaging-ignore-patterns.txt
+
+/package
+/release
