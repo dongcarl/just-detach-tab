@@ -1,15 +1,15 @@
 ﻿{
   "manifest_version": 2,
   "name": "Just Detach Tab",
-  "version": "2.0.4",
-  "description": "Detach and Reattach tab with customizable keyboard shortcuts.",
+  "version": "0.0.1",
+  "description": "Detach tab with customizable keyboard shortcuts.",
   "options_ui": {
       "page": "options.html",
       "browser_style": true
   },
   "developer": {
-    "name": "Claymont",
-    "url": "https://github.com/Claymont/detach-tab"
+    "name": "Carl Dong",
+    "url": "https://github.com/dongcarl/just-detach-tab"
   },
   "permissions": [
     "tabs"
@@ -24,16 +24,10 @@
       },
       "description": "Detaches active tab"
     },
-    "reattach-tab": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+V"
-      },
-      "description": "Reattaches last detached tab"
-    }
   },
   "applications": {
     "gecko": {
-      "id": "claymont@mail.com_detach-tab",
+      "id": "just-detach-tab@carldong.me",
       "strict_min_version": "60.0"
     }
   }

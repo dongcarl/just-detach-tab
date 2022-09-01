@@ -1,12 +1,4 @@
-﻿function handleDetached(tabId, detachInfo) {
-  window.undoWinId = detachInfo.oldWindowId;
-  window.undoPosId = detachInfo.oldPosition;
-  window.undoTabId = tabId;
-}
-
-browser.tabs.onDetached.addListener(handleDetached);
-
-browser.commands.onCommand.addListener(function(command) {
+﻿browser.commands.onCommand.addListener(function(command) {
 
   function getCurrentWindowTabs() {
     return browser.tabs.query({currentWindow: true});
@@ -42,42 +34,4 @@ browser.commands.onCommand.addListener(function(command) {
     let getTabs = browser.windows.getCurrent({populate: true});
     getTabs.then(logTabs);
   }
-
-  if (command == "reattach-tab") {
-    function AllTabsAllWins(windowInfoArray) {
-      for (let tabInfo of windowInfoArray) {
-        var tabIdAllWin = tabInfo.tabs.map((tab) => {return tab.id});
-        for (let tabtabInfo of tabIdAllWin) {
-          if (tabtabInfo == window.undoTabId) {
-            function AllWins(windowInfoArray) {
-              for (let windowInfo of windowInfoArray) {
-                var windowInformation = windowInfo.id;
-                if (windowInformation != window.undoWinId) {
-                  continue;
-                }
-                else  {
-                  var moving = browser.tabs.move([window.undoTabId], {
-                    windowId: window.undoWinId,
-                    index: window.undoPosId
-                  });
-                  browser.windows.update(window.undoWinId, {focused: true});
-                  browser.tabs.update(window.undoTabId, {active: true})
-                  break;
-                }
-              }
-            }
-            var getAllWins = browser.windows.getAll({populate: true});
-            getAllWins.then(AllWins);
-            break;
-          }
-          else {
-            continue;
-          }
-        }
-      }
-    }
-    var getAllTabsAllWins = browser.windows.getAll({populate: true});
-    getAllTabsAllWins.then(AllTabsAllWins);
-  };
-
 });

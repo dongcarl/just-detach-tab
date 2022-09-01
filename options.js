@@ -1,5 +1,4 @@
 ﻿const commandDetach = 'detach-tab';
-const commandReattach = 'reattach-tab';
 
 /**
  * Update the UI: set the value of the shortcut textbox.
@@ -9,9 +8,6 @@ async function updateUI() {
   for (command of commands) {
     if (command.name === commandDetach) {
       document.querySelector('#shortcut-detach').value = command.shortcut;
-    }
-    if (command.name === commandReattach) {
-      document.querySelector('#shortcut-reattach').value = command.shortcut;
     }
   }
 }
@@ -24,10 +20,6 @@ async function applyShortcut() {
     name: commandDetach,
     shortcut: document.querySelector('#shortcut-detach').value
   });
-  await browser.commands.update({
-    name: commandReattach,
-    shortcut: document.querySelector('#shortcut-reattach').value
-  });
 }
 
 /**
@@ -35,7 +27,6 @@ async function applyShortcut() {
  */
 async function resetShortcut() {
   await browser.commands.reset(commandDetach);
-  await browser.commands.reset(commandReattach);
   updateUI();
 }
 
