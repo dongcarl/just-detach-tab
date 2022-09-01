@@ -1,6 +1,6 @@
 ﻿{
   "manifest_version": 2,
-  "name": "Detach Tab",
+  "name": "Just Detach Tab",
   "version": "2.0.4",
   "description": "Detach and Reattach tab with customizable keyboard shortcuts.",
   "options_ui": {
